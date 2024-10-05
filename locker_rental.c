@@ -9,7 +9,7 @@
     //FUNCTION PROTOTYPES
 
 void lockerArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]); // This is initalizing the lockers 1-100 and placing them into an array that allows for input.
-int lockerFile(char [MAX_LOCKERS][MAX_ITEM_lENGTH], const char *lockerContent); // This is where we will create the file for lockers
+int lockerFile(Lockers *lockers, const char *lockerContentFile); // This is where we will create the file for lockers
 int lockerValidity(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH], int lockerNum); // Verifies if input is between 1-100
 int lockerRental(); //This verifies if the locker is avaliable. If avaliable then it will request items being stored then mark as rented. 
 int terminateRental(); // Verifies if the locker is rented, if so then empty locker and mark locker empty.
@@ -17,43 +17,45 @@ int displayAll(); // Will display all rented lockers then
 
 
     //Building Functions
+typedef struct { 
+    // Creates a struct (A function that can hold more than 1 data type)
+    int locker[MAX_LOCKERS]; // first array that creates locker # 1-100
+    char contents[MAX_LOCKERS][MAX_ITEM_lENGTH];
+} Lockers; // the typedef name?
 
-void lockerArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]){
+/* void lockerArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]){
     // This function is making the array for lockers.
     for (int i =0; i <MAX_LOCKERS; i++){
         lockers[i][0] ='\0'; 
     }
-}
+}*/
 
-int lockerFile(char [MAX_LOCKERS][MAX_ITEM_lENGTH], const char *lockerContent){
-    // This should create the file to hold the locker array and add a empty string to each locker.
-    FILE *lockerContent;
-    lockerContent = fopen("lockerContent.txt", "a");
-     if (lockerContent == NULL){
-        perror("Error, Cannot open file...\n");
-
-            return 1;
+int lockerFile(Lockers *lockers, const char *lockerContentFile) {
+    //Creates the file that will hold the 2D array.
+    FILE *lockerContentFile;
+    lockerContentFile = fopen(lockerContentFile, "a");
+     if (lockerContentFile == NULL) {
+        perror("STAPH WHAT ARE YOU DOING!? Respectfully, file did not open...\n");
+      return 1;
      }
-     for (int i = 0; i < MAX_LOCKERS; i++){
-        fprintf(lockerContent, "locker %d: %s\n", i + 1, lockers[i]);
+     for (int i = 0; i < MAX_LOCKERS; i++) {
+        fprintf(lockerContentFile, "Locker %d: %s\n", Lockers.Locker[i], Lockers.Contents[i]);
      }
-    fclose(lockerContent);
+             fclose(lockerContentFile);
+      return 0;
 }
 
 
 int lockerValidity(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH], int lockerNum) {
-    char itemInput[MAX_ITEM_lENGTH];
-
-    printf("Enter locker number (1-100): \n");
-    scanf("%d", &lockerNum);
-
+ char itemInput[MAX_ITEM_lENGTH];
+ printf("Enter locker number (1-100): \n");
+ scanf("%d", &lockerNum);
     if (lockerNum < 1 || lockerNum > MAX_LOCKERS){ 
         // handles invalid input.
         printf("Sorry, there are only 100 lockers available.\n");
             return -1; // indicates that locker # is invalid.
-        }
-     // this needs to be completed to read if the locker number is empty or not.
-
+    } else
+        return 0;
 }
 
 int lockerRental();{
@@ -83,6 +85,8 @@ int *menuInput_prt;
 int lockerRented;
 int lockerNum;
 char lockers;
+char itemInput;
+char *itemInput_ptr;
 
 do {
     //Displays user menu then updated the value of menuInput.
@@ -100,25 +104,34 @@ do {
   
   scanf("%d", menuInput);
 
+    switch (*menuInput_prt){
+        case 1: // view a locker
+         printf("Enter locker number 1-100): \n");
+         scanf("%d", &lockerNum);
 
-    switch (menuInput_prt){
-        case 1:
+         int result = lockerValidity(lockers, lockerNum); 
+          if (result == 0) {
+            printf("Locker %d contents: %s\n", lockerNum, lockers[lockerNum -1]);
+          } else 
+            printf("Locker %d is EMPTY.", lockerNum);
+            
+             break;
 
+        case 2: // rent a locker
+         printf("Enter locker number 1-100): \n");
+         scanf("%d", &lockerNum);
+         printf("Enter the item you want to store in the locker: '%s'\n", &contents);
             break;
 
-        case 2:
-         
-            break;
-
-        case 3:
+        case 3: // End a locker rental
             
             break;
 
-        case 4:
+        case 4: // list all locker contents
             
             break;
 
-        case 5:
+        case 5: // quit 
             
             break;
 
