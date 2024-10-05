@@ -8,7 +8,7 @@
 
     //FUNCTION PROTOTYPES
 
-void lockerArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]); // This is initalizing the lockers 1-100 and placing them into an array that allows for input.
+void intializeArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]); // This is initalizing the lockers 1-100 and placing them into an array that allows for input.
 int lockerFile(Lockers *lockers, const char *lockerContentFile); // This is where we will create the file for lockers
 int lockerValidity(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH], int lockerNum); // Verifies if input is between 1-100
 int lockerRental(); //This verifies if the locker is avaliable. If avaliable then it will request items being stored then mark as rented. 
@@ -23,12 +23,12 @@ typedef struct {
     char contents[MAX_LOCKERS][MAX_ITEM_lENGTH];
 } Lockers; // the typedef name?
 
-/* void lockerArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]){
+void intializeArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]){
     // This function is making the array for lockers.
     for (int i =0; i <MAX_LOCKERS; i++){
         lockers[i][0] ='\0'; 
     }
-}*/
+}
 
 int lockerFile(Lockers *lockers, const char *lockerContentFile) {
     //Creates the file that will hold the 2D array.
@@ -78,7 +78,7 @@ int lockerRental();{
 
 
 int main(){
-
+Lockers locker_in_use; // delcares a variable "locker_in_use" of type Lockers.
     //Variables
 int menuInput;
 int *menuInput_prt;
@@ -89,6 +89,8 @@ char itemInput;
 char *itemInput_ptr;
 
 do {
+void intializeArray(char lockers[MAX_LOCKERS][MAX_ITEM_lENGTH]);
+
     //Displays user menu then updated the value of menuInput.
  printf("\n");
  printf("Locker Rental Menu\n");
@@ -118,10 +120,21 @@ do {
              break;
 
         case 2: // rent a locker
-         printf("Enter locker number 1-100): \n");
-         scanf("%d", &lockerNum);
-         printf("Enter the item you want to store in the locker: '%s'\n", &contents);
-            break;
+
+        // LEFT OFF HERE - Build this case.
+    printf("Enter locker number (1-100): \n");
+    scanf("%d", &lockerNum);
+    if (lockerNum < 1 || lockerNum > 100) {
+        printf("Invalid locker number. Please enter a number between 1 and 100.\n");
+        return 1;
+    }
+    printf("Enter the item you want to store in the locker: \n");
+    scanf(" %[^\n]", myLockers.contents[lockerNum - 1]); // store user input in the locker
+
+    // Display the stored item for confirmation
+    printf("Locker %d now contains: %s\n", lockerNum, myLockers.contents[lockerNum - 1]);
+
+    return 0;
 
         case 3: // End a locker rental
             
