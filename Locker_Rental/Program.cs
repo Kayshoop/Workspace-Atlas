@@ -1,3 +1,4 @@
+﻿/* Translate this C code into C#.
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
